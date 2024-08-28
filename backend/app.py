@@ -12,7 +12,6 @@ from huggingface_hub import login
 from functools import lru_cache
 import warnings
 
-#TODO: ai history
 # Suppress warnings and set transformers logging to ERROR level
 warnings.filterwarnings("ignore")
 transformers_logging.set_verbosity_error()
@@ -90,6 +89,24 @@ def log_request_info():
 def health_check():
     return 'OK', 200
 
+def get_conversation_history(conversation_id, limit=5):
+    conn = sqlite3.connect('conversations.db')
+    c = conn.cursor()
+    c.execute("SELECT role, content FROM conversations WHERE conversation_id = ? ORDER BY timestamp DESC LIMIT ?", (conversation_id, limit))
+    history = c.fetchall()
+    conn.close()
+    return history[::-1]  # Reverse to get chronological order
+
+def format_prompt(user_message, history):
+    system_message = "You are a helpful AI assistant. Respond to the user's message with a single, brief, and clear answer. Consider the conversation history if relevant, but do not repeat previous information unnecessarily."
+    prompt = f"<|im_start|>system\n{system_message}<|im_end|>\n"
+    
+    for role, content in history:
+        prompt += f"<|im_start|>{role}\n{content}<|im_end|>\n"
+    
+    prompt += f"<|im_start|>user\n{user_message}<|im_end|>\n<|im_start|>assistant\n"
+    return prompt
+
 @app.route('/chat', methods=['POST'])
 def chat():
     start_time = time.time()
@@ -106,10 +123,11 @@ def chat():
 
         tokenizer, model = get_model_and_tokenizer()
 
-        # Prepare prompt for the model
-        prompt = "You are a helpful AI assistant. Respond to the user's message with a single, brief, and clear answer. Do not include any additional questions or user messages in your response.\n\n"
-        prompt += f"User: {user_message}\nAssistant:"
+        # Get conversation history
+        history = get_conversation_history(conversation_id)
 
+        # Prepare prompt for the model
+        prompt = format_prompt(user_message, history)
         logger.info(f"Prepared prompt: {prompt}")
 
         # Generate response using the model
@@ -117,7 +135,7 @@ def chat():
         with torch.no_grad():
             outputs = model.generate(
                 **inputs,
-                max_new_tokens=50,
+                max_new_tokens=200,  # Increased from 100 to 200
                 do_sample=True,
                 temperature=0.7,
                 top_p=0.95,
@@ -130,8 +148,20 @@ def chat():
         full_response = tokenizer.decode(outputs[0], skip_special_tokens=True)
         logger.info(f"Full model response: {full_response}")
         
-        # Extract only the assistant's response, stopping at any "User:" or newline
-        ai_response = full_response.split('Assistant:')[-1].split('User:')[0].split('\n')[0].strip()
+        full_response = tokenizer.decode(outputs[0], skip_special_tokens=True)
+        logger.info(f"Full model response: {full_response}")
+        
+        # Extract only the assistant's response
+        response_parts = full_response.split("<|im_start|>assistant\n")
+        if len(response_parts) > 1:
+            ai_response = response_parts[-1].split("<|im_end|>")[0].strip()
+            
+            # Limit response length if it's too long
+            max_response_length = 10000  # Adjust this value as needed
+            if len(ai_response) > max_response_length:
+                ai_response = ai_response[:max_response_length] + "..."
+        else:
+            ai_response = "I apologize, but I couldn't generate a proper response."
         
         logger.info(f"Extracted AI response: {ai_response}")
 
