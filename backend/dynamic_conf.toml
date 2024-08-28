@@ -1,0 +1,22 @@
+[http.routers]
+  [http.routers.bg-remover]
+    rule = "Host(`backend-domain`)"
+    service = "ai-app"
+    entryPoints = ["websecure"]
+    [http.routers.bg-remover.tls]
+      certResolver = "myresolver"
+
+[http.services]
+  [http.services.bg-remover.loadBalancer]
+    [[http.services.bg-remover.loadBalancer.servers]]
+      url = "http://ai-app:5000"
+
+[http.middlewares]
+  [http.middlewares.cors.headers]
+    accessControlAllowOriginList = ["frontend-domain"]
+    accessControlAllowMethods = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+    accessControlAllowHeaders = ["Origin", "Content-Type", "Accept"]
+    accessControlAllowCredentials = true
+
+[http.routers.bg-remover.middlewares]
+  middlewares = ["cors"]
