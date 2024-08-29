@@ -57,3 +57,15 @@
     @apply bg-background text-foreground;
   }
 }
+
+.react-resizable-handle {
+  transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.react-resizable-handle:hover {
+  transform: scaleX(1.5);
+}
+
+.react-resizable {
+  transition: height 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+}

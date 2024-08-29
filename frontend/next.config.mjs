@@ -25,7 +25,7 @@ const nextConfig = {
       },
       {
         source: "/api/:path*",
-        destination: "backend-domain/:path*",
+        destination: "http://localhost:6000/:path*",
       },
     ];
   },

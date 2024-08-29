@@ -11,10 +11,7 @@ import sqlite3
 from huggingface_hub import login
 from functools import lru_cache
 import warnings
-
-# Suppress warnings and set transformers logging to ERROR level
-warnings.filterwarnings("ignore")
-transformers_logging.set_verbosity_error()
+import re
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": ["https://your-domain.com", "https://api.your-domain.com"]}})
@@ -97,14 +94,16 @@ def get_conversation_history(conversation_id, limit=5):
     conn.close()
     return history[::-1]  # Reverse to get chronological order
 
-def format_prompt(user_message, history):
-    system_message = "You are a helpful AI assistant. Respond to the user's message with a single, brief, and clear answer. Consider the conversation history if relevant, but do not repeat previous information unnecessarily."
+def format_prompt(user_message, history, max_history=5):
+    system_message = "You are a helpful AI assistant with an extreme attention to detail. Respond to the user's message with a single, brief, and clear answer. Consider the conversation history if relevant, but do not repeat previous information unnecessarily. You must review your response for any erroneous, duplicate, or irrelevant information and based on your review, you must make edits to your response to ensure it is accurate, relevant, and does not contain any errors."
     prompt = f"<|im_start|>system\n{system_message}<|im_end|>\n"
     
-    for role, content in history:
+    # Add limited history
+    for role, content in history[-max_history:]:
         prompt += f"<|im_start|>{role}\n{content}<|im_end|>\n"
     
-    prompt += f"<|im_start|>user\n{user_message}<|im_end|>\n<|im_start|>assistant\n"
+    # Add a clear separator for the current question
+    prompt += "<|im_start|>user\nCurrent question: " + user_message + "<|im_end|>\n<|im_start|>assistant\n"
     return prompt
 
 @app.route('/chat', methods=['POST'])
@@ -145,16 +144,19 @@ def chat():
                 pad_token_id=tokenizer.pad_token_id,
             )
 
+      
         full_response = tokenizer.decode(outputs[0], skip_special_tokens=True)
         logger.info(f"Full model response: {full_response}")
         
-        full_response = tokenizer.decode(outputs[0], skip_special_tokens=True)
-        logger.info(f"Full model response: {full_response}")
-        
-        # Extract only the assistant's response
+        # Extract only the latest assistant's response
         response_parts = full_response.split("<|im_start|>assistant\n")
         if len(response_parts) > 1:
             ai_response = response_parts[-1].split("<|im_end|>")[0].strip()
+            
+            # Remove any weird tokens or artifacts
+            ai_response = re.sub(r'\|<\|reserved_special_token_\d+\|>\|', '', ai_response)
+            ai_response = re.sub(r'\|\|im\|>e<\|special_token_\d+\|>r<\|', '', ai_response)
+            ai_response = re.sub(r'<\|.*?\|>', '', ai_response)  # Remove any remaining special tokens
             
             # Limit response length if it's too long
             max_response_length = 10000  # Adjust this value as needed
@@ -164,7 +166,6 @@ def chat():
             ai_response = "I apologize, but I couldn't generate a proper response."
         
         logger.info(f"Extracted AI response: {ai_response}")
-
         # Store the new messages in the database
         conn = sqlite3.connect('conversations.db')
         c = conn.cursor()

@@ -67,14 +67,36 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        bounce: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-25%)" },
+        },
+      },
+      transitionTimingFunction: {
+        'bounce': 'cubic-bezier(0.175, 0.885, 0.32, 1.275)',
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        bounce: "bounce 1s infinite",
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    require('@tailwindcss/typography'),
+    function ({ addUtilities }: { addUtilities: any }) {
+      const newUtilities = {
+        ".animation-delay-200": {
+          "animation-delay": "200ms",
+        },
+        ".animation-delay-400": {
+          "animation-delay": "400ms",
+        },
+      };
+      addUtilities(newUtilities);
+    },
+  ],
 } satisfies Config
 
 export default config
