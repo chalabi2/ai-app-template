@@ -39,7 +39,7 @@ export default function Home() {
   if (status === "loading") {
     return (
       <div className="flex justify-center items-center flex-grow">
-        <Icons.spinner className="mr-2 my-auto h-24 w-24 animate-spin text-pink-400" />
+        <Icons.spinner className="my-auto h-24 w-24 animate-spin text-pink-400" />
       </div>
     );
   }
