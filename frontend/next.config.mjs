@@ -8,14 +8,18 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "domain",
+        hostname: "chat.jchalabi.xyz",
       },
       {
         protocol: "http",
-        hostname: "backend-domain",
+        hostname: "igi5762pidb0f2m297425pvpjo.ingress.cato.akash.pub",
       },
     ],
-    domains: ["localhost", "rmbg.jchalabi.xyz", "backend-domain"],
+    domains: [
+      "localhost",
+      "chat.jchalabi.xyz",
+      "igi5762pidb0f2m297425pvpjo.ingress.cato.akash.pub",
+    ],
   },
   async rewrites() {
     return [
