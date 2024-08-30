@@ -49,13 +49,33 @@
   }
 }
 
-@layer base {
-  * {
-    @apply border-border;
+@keyframes glitch {
+  0% {
+    text-shadow: 0.05em 0 0 #00fffc, -0.05em -0.025em 0 #fc00ff,
+      0.025em 0.05em 0 #fffc00;
   }
-  body {
-    @apply bg-background text-foreground;
+  15% {
+    text-shadow: -0.05em -0.025em 0 #00fffc, 0.025em 0.025em 0 #fc00ff,
+      -0.05em -0.05em 0 #fffc00;
   }
+  50% {
+    text-shadow: 0.025em 0.05em 0 #00fffc, 0.05em 0 0 #fc00ff,
+      0 -0.05em 0 #fffc00;
+  }
+  100% {
+    text-shadow: -0.025em 0 0 #00fffc, -0.025em -0.025em 0 #fc00ff,
+      -0.025em -0.05em 0 #fffc00;
+  }
+}
+
+.glitch {
+  animation: glitch 1s linear infinite;
+}
+
+.terminal-text {
+  font-family: "VT323", monospace;
+  color: #39ff14;
+  text-shadow: 0 0 5px #39ff14;
 }
 
 .react-resizable-handle {

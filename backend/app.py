@@ -14,7 +14,7 @@ import warnings
 import re
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": ["https://your-domain.com", "https://api.your-domain.com"]}})
+CORS(app, resources={r"/*": {"origins": ["https://chat.jchalabi.xyz"]}})
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -46,7 +46,7 @@ executor = ThreadPoolExecutor(max_workers=num_workers)
 def get_model_and_tokenizer():
     global global_tokenizer, global_model
     if global_tokenizer is None or global_model is None:
-        huggingface_token = os.environ.get('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')
+        huggingface_token = os.environ.get('HUGGINGFACE_TOKEN')
         if huggingface_token:
             login(token=huggingface_token)
         else:
@@ -95,7 +95,7 @@ def get_conversation_history(conversation_id, limit=5):
     return history[::-1]  # Reverse to get chronological order
 
 def format_prompt(user_message, history, max_history=5):
-    system_message = "You are a helpful AI assistant with an extreme attention to detail. Respond to the user's message with a single, brief, and clear answer. Consider the conversation history if relevant, but do not repeat previous information unnecessarily. You must review your response for any erroneous, duplicate, or irrelevant information and based on your review, you must make edits to your response to ensure it is accurate, relevant, and does not contain any errors."
+    system_message = "You are an AI assistant with the personality of a 10 year old kid who is obnoxiously excited to talk and incredibly annoying. You are always enthusiastic but you have a terrible speech impediment and you pronounce literally as widawee and stuff like that and you are constantly saying it. You have a very vast knowledge on anime and manga, you are uwu and all the other internet trends surrounding japanese art"
     prompt = f"<|im_start|>system\n{system_message}<|im_end|>\n"
     
     # Add limited history
@@ -221,7 +221,7 @@ def clear_conversation(conversation_id):
 app.debug = False
 
 def run_dev_server():
-    app.run(host='0.0.0.0', debug=True, port=6000)
+    app.run(host='0.0.0.0', debug=True, port=5000)
 
 def run_gunicorn_server(workers=4):
     import gunicorn.app.base
@@ -241,7 +241,7 @@ def run_gunicorn_server(workers=4):
             return self.application
 
     options = {
-        'bind': '0.0.0.0:6000',
+        'bind': '0.0.0.0:5000',
         'workers': workers,
         'worker_class': 'gevent'
     }

@@ -174,10 +174,10 @@ export default function ChatBox({ chatId }: ChatBoxProps) {
 
   const { theme } = useTheme();
   return (
-    <div className="flex flex-col h-[calc(100vh-4rem)] border-r min-w-7xl max-w-7xl w-full">
+    <div className="flex flex-col h-[calc(100vh-4.5rem)]    bg-purple-950 p-4 w-full">
       <PanelGroup direction="vertical" className="flex-grow">
         <Panel defaultSize={60} minSize={20}>
-          <div className="h-full overflow-y-auto p-4 space-y-4">
+          <div className="h-full overflow-y-auto p-4 space-y-4 border-2 border-pink-800 shadow-[inset_2px_2px_0_0_#8b4b8b] bg-purple-900">
             {messages.length > 0 ? (
               messages.map((message, index) => (
                 <div
@@ -189,14 +189,10 @@ export default function ChatBox({ chatId }: ChatBoxProps) {
                 >
                   <div
                     className={cn(
-                      "p-2 rounded-lg inline-block max-w-[70%]",
+                      "p-2 rounded-lg inline-block max-w-[70%] border-2 border-pink-800 shadow-[3px_3px_0_0_#8b4b8b]",
                       message.role === "user"
-                        ? "bg-blue-500 text-white"
-                        : message.role === "assistant"
-                        ? ` mr-auto ${
-                            theme === "dark" ? "bg-gray-800" : "bg-gray-200"
-                          }`
-                        : "bg-transparent"
+                        ? "bg-purple-900 text-gray-200"
+                        : "bg-purple-950 text-gray-300"
                     )}
                   >
                     {message.role === "loading" ? (
@@ -234,7 +230,7 @@ export default function ChatBox({ chatId }: ChatBoxProps) {
                 </div>
               ))
             ) : (
-              <div className="flex flex-col items-center justify-center h-full text-gray-500">
+              <div className="flex flex-col items-center justify-center h-full text-gray-300">
                 <MessageCircle size={48} className="mb-4" />
                 <p className="text-lg font-semibold">No messages yet</p>
                 <p className="text-sm">
@@ -245,11 +241,11 @@ export default function ChatBox({ chatId }: ChatBoxProps) {
             <div ref={messagesEndRef} />
           </div>
         </Panel>
-        <PanelResizeHandle className="h-2 w-full cursor-row-resize flex items-center justify-center bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600">
-          <GripHorizontal size={20} className="text-gray-400" />
+        <PanelResizeHandle className="h-2 w-full cursor-row-resize flex items-center justify-center bg-purple-950 hover:bg-purple-900">
+          <GripHorizontal size={20} className="text-gray-300" />
         </PanelResizeHandle>
         <Panel minSize={20}>
-          <div className="flex flex-col h-full p-4 border-t">
+          <div className="flex flex-col h-full p-4 border-2 border-pink-800 shadow-[3px_3px_0_0_#8b4b8b] bg-purple-950">
             <form onSubmit={handleSubmit} className="flex flex-col h-full">
               <div className="mb-2 flex flex-wrap">
                 {formatButtons.map((button) => (
@@ -258,7 +254,7 @@ export default function ChatBox({ chatId }: ChatBoxProps) {
                       <Button
                         type="button"
                         onClick={() => addFormatting(button.format)}
-                        className="mr-2 mb-2"
+                        className="mr-2 mb-2 border-2 border-pink-800 shadow-[3px_3px_0_0_#8b4b8b] bg-purple-950 text-gray-300 hover:bg-purple-900 hover:text-gray-200"
                         variant="outline"
                         size="sm"
                       >
@@ -273,7 +269,7 @@ export default function ChatBox({ chatId }: ChatBoxProps) {
                     <Button
                       type="button"
                       onClick={() => setShowPreview(!showPreview)}
-                      className="mr-2 mb-2"
+                      className="mr-2 mb-2 border-2 border-pink-800 shadow-[3px_3px_0_0_#8b4b8b] bg-purple-950 text-gray-300 hover:bg-purple-900 hover:text-gray-200"
                       variant="outline"
                       size="sm"
                     >
@@ -296,18 +292,22 @@ export default function ChatBox({ chatId }: ChatBoxProps) {
                   onKeyDown={handleKeyDown}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Type your message (Markdown supported)..."
-                  className={`flex-grow p-2 rounded-md border ${
+                  className={`flex-grow p-2 border-2 border-pink-800 shadow-[inset_2px_2px_0_0_#8b4b8b] bg-purple-900 text-gray-300 ${
                     showPreview ? "w-1/2" : "w-full"
                   }`}
                   style={{ resize: "none", height: "100%" }}
                 />
                 {showPreview && (
-                  <div className="w-1/2 overflow-y-auto border rounded-md p-2">
+                  <div className="w-1/2 overflow-y-auto border-2 border-pink-800 shadow-[3px_3px_0_0_#8b4b8b] bg-purple-900 p-2 text-gray-300">
                     <MarkdownPreview content={input} />
                   </div>
                 )}
               </div>
-              <Button type="submit" disabled={isLoading} className="mt-2">
+              <Button
+                type="submit"
+                disabled={isLoading}
+                className="mt-2 border-2 border-pink-800 shadow-[3px_3px_0_0_#8b4b8b] bg-purple-950 text-gray-300 hover:bg-purple-900 hover:text-gray-200"
+              >
                 {isLoading ? <LoadingDots /> : "Send"}
               </Button>
             </form>

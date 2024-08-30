@@ -1,6 +1,6 @@
 [http.routers]
   [http.routers.bg-remover]
-    rule = "Host(`backend-domain`)"
+    rule = "Host(`api.jchalabi.xyz`)"
     service = "ai-app"
     entryPoints = ["websecure"]
     [http.routers.bg-remover.tls]
@@ -13,7 +13,7 @@
 
 [http.middlewares]
   [http.middlewares.cors.headers]
-    accessControlAllowOriginList = ["frontend-domain"]
+    accessControlAllowOriginList = ["chat.jchalabi.xyz"]
     accessControlAllowMethods = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
     accessControlAllowHeaders = ["Origin", "Content-Type", "Accept"]
     accessControlAllowCredentials = true

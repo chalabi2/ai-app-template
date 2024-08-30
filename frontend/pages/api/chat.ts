@@ -8,7 +8,7 @@ export default async function handler(
   if (req.method === 'POST') {
     try {
       const { conversation_id, message } = req.body;
-      const response = await axios.post('http://localhost:6000/chat', {
+      const response = await axios.post('http://igi5762pidb0f2m297425pvpjo.ingress.cato.akash.pub/chat', {
         conversation_id,
         message,
       });

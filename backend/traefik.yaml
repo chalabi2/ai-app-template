@@ -14,7 +14,7 @@ entryPoints:
 certificatesResolvers:
   myresolver:
     acme:
-      email: ""
+      email: "chalabi@chandrastation.com"
       storage: "/letsencrypt/acme.json"
       tlsChallenge: {}
 

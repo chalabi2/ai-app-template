@@ -12,13 +12,15 @@ COPY requirements.txt .
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
-RUN pip install --no-cache-dir gevent
 
 # Copy the application code
 COPY . .
 
 # Expose the port the app runs on
 EXPOSE 5000
+
+# Set the environment variable
+ENV HUGGINGFACE_TOKEN=${HUGGINGFACE_TOKEN}
 
 # Run the application with Gunicorn
 CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "4", "--worker-class", "gevent", "app:app"]

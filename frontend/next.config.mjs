@@ -25,7 +25,8 @@ const nextConfig = {
       },
       {
         source: "/api/:path*",
-        destination: "http://localhost:6000/:path*",
+        destination:
+          "http://igi5762pidb0f2m297425pvpjo.ingress.cato.akash.pub/:path*",
       },
     ];
   },

@@ -10,75 +10,38 @@ const config = {
   ],
   prefix: "",
   theme: {
-    container: {
-      center: true,
-      padding: "2rem",
-      screens: {
-        "2xl": "1400px",
-      },
-    },
     extend: {
-      colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-        },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
-        },
-      },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
-      },
       keyframes: {
-        "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
-        },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
-        },
-        bounce: {
-          "0%, 100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-25%)" },
-        },
-      },
-      transitionTimingFunction: {
-        'bounce': 'cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+        typing: {
+          "0%": {
+            width: "0%",
+            visibility: "hidden"
+          },
+          "100%": {
+            width: "100%"
+          }
+        }
       },
       animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
-        bounce: "bounce 1s infinite",
+        typing: "typing 2s steps(20) infinite alternate"
+      },
+      colors: {
+        'win-gray': '#c0c0c0',
+        'win-blue': '#000080',
+        'win-teal': '#008080',
+        'win-green': '#39ff14',
+        'win-purple': '#9932cc',
+        'win-red': '#ff0000',
+        'win-yellow': '#ffff00',
+        'win-cyan': '#00ffff',
+        'win-pink': '#ff69b4',
+      },
+      boxShadow: {
+        'win': 'inset -1px -1px #0a0a0a, inset 1px 1px #dfdfdf, inset -2px -2px grey, inset 2px 2px #fff',
+        'win-inset': 'inset -1px -1px #fff, inset 1px 1px #0a0a0a, inset -2px -2px #dfdfdf, inset 2px 2px grey',
+      },
+      borderWidth: {
+        '3': '3px',
       },
     },
   },
@@ -92,6 +55,25 @@ const config = {
         },
         ".animation-delay-400": {
           "animation-delay": "400ms",
+        },
+        ".win-border": {
+          "border-style": "solid",
+          "border-width": "3px",
+          "border-left-color": "#dfdfdf",
+          "border-top-color": "#dfdfdf",
+          "border-right-color": "#0a0a0a",
+          "border-bottom-color": "#0a0a0a",
+        },
+        ".win-border-inset": {
+          "border-style": "solid",
+          "border-width": "3px",
+          "border-left-color": "#0a0a0a",
+          "border-top-color": "#0a0a0a",
+          "border-right-color": "#dfdfdf",
+          "border-bottom-color": "#dfdfdf",
+        },
+        ".pixelated": {
+          "image-rendering": "pixelated",
         },
       };
       addUtilities(newUtilities);

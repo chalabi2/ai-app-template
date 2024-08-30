@@ -11,6 +11,7 @@ services:
           - global: true
     env:
       - FLASK_ENV=production
+      - HUGGINGFACE_TOKEN=
 
 profiles:
   compute:

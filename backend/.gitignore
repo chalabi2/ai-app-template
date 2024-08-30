@@ -156,3 +156,4 @@ Thumbs.db
 # Logs
 logs/
 *.log
+conversations.db

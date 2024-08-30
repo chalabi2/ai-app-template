@@ -3,8 +3,12 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import Header from "@/components/Header";
+import { Varela } from "next/font/google";
 
-const inter = Inter({ subsets: ["latin"] });
+const vt323 = Varela({
+  weight: "400",
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "AI Chat App",
@@ -18,11 +22,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full">
-      <body className={`${inter.className} flex flex-col min-h-full`}>
+      <body
+        className={`${vt323.className} flex flex-col min-h-full bg-[url('/anime-background.jpg')] bg-cover bg-center bg-purple-950`}
+      >
         <Providers>
           <Header />
-          <main className="flex-grow flex justify-center items-center">
-            <div className="w-full max-w-[90rem] px-4">{children}</div>
+          <main className="flex-grow flex justify-center bg-purple-950 overflow-hidden items-center">
+            <div className="w-full min-w-[100%] px-4">{children}</div>
           </main>
         </Providers>
       </body>

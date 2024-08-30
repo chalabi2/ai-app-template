@@ -9,14 +9,14 @@ export default async function handler(
 
   if (req.method === 'GET') {
     try {
-      const response = await axios.get(`http://localhost:6000/conversation/${id}`);
+      const response = await axios.get(`http://igi5762pidb0f2m297425pvpjo.ingress.cato.akash.pub/conversation/${id}`);
       res.status(200).json(response.data);
     } catch (error) {
       res.status(500).json({ error: 'Error retrieving conversation' });
     }
   } else if (req.method === 'POST') {
     try {
-      const response = await axios.post(`http://localhost:6000/clear_conversation/${id}`);
+      const response = await axios.post(`http://igi5762pidb0f2m297425pvpjo.ingress.cato.akash.pub/clear_conversation/${id}`);
       res.status(200).json(response.data);
     } catch (error) {
       res.status(500).json({ error: 'Error clearing conversation' });
