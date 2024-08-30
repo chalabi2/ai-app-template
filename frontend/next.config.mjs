@@ -24,10 +24,6 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: "/api/auth/:path*",
-        destination: "https://chat.jchalabi.xyz/api/auth/:path*",
-      },
-      {
         source: "/api/:path*",
         destination:
           "http://igi5762pidb0f2m297425pvpjo.ingress.cato.akash.pub/:path*",
