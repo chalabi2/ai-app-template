@@ -21,7 +21,7 @@ const nextConfig = {
     return [
       {
         source: "/api/auth/:path*",
-        destination: "/api/auth/:path*",
+        destination: "https://chat.jchalabi.xyz/api/auth/:path*",
       },
       {
         source: "/api/:path*",
